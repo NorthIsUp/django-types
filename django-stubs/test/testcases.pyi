@@ -1,6 +1,7 @@
 import threading
 import unittest
-from collections.abc import Callable, Iterable
+from collections.abc import Callable, Iterable, Iterator
+from contextlib import contextmanager
 from types import TracebackType
 from typing import Any, ClassVar, TypeVar, overload
 
@@ -211,6 +212,11 @@ class TransactionTestCase(SimpleTestCase):
     ) -> _AssertNumQueriesContext: ...
 
 class TestCase(TransactionTestCase):
+    @classmethod
+    @contextmanager
+    def captureOnCommitCallbacks(
+        cls, *, using: str = ..., execute: bool = ...
+    ) -> Iterator[list[Callable[[], Any]]]: ...
     @classmethod
     def setUpTestData(cls) -> None: ...
 
