@@ -281,6 +281,18 @@ class Client(ClientMixin, RequestFactory):
         query_params: str | None = ...,
         **extra: str,
     ) -> HttpResponse: ...
+    def generic(  # type: ignore [override]
+        self,
+        method: str,
+        path: _StrOrPromise,
+        data: _RequestData = ...,
+        content_type: str | None = ...,
+        secure: bool = ...,
+        *,
+        headers: Mapping[str, Any] | None = ...,
+        query_params: str | None = ...,
+        **extra: str,
+    ) -> HttpResponse: ...
     def trace(  # type: ignore [override]
         self,
         path: _StrOrPromise,
