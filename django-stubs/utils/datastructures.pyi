@@ -61,7 +61,8 @@ class MultiValueDict(dict[_K, _V]):
     @overload
     def __init__(self, key_to_list_mapping: Iterable[tuple[_K, list[_V]]] = ()) -> None: ...
     @override
-    def __getitem__(self, key: _K) -> _V | list[object]: ...  # type: ignore[override]
+    # Returns the LAST value for the key; getlist() is what returns a list.
+    def __getitem__(self, key: _K) -> _V: ...  # type: ignore[override]
     @override
     def __setitem__(self, key: _K, value: _V) -> None: ...
     def __copy__(self) -> Self: ...

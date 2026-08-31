@@ -85,7 +85,8 @@ class URLPattern:
     def resolve(self, path: str) -> ResolverMatch | None: ...
 
 class URLResolver:
-    url_patterns: list[tuple[str, Callable[..., Any]]]
+    # include() yields nested resolvers, so the list is heterogeneous.
+    url_patterns: list[URLPattern | URLResolver]
     urlconf_module: list[tuple[str, Callable[..., Any]]] | None
     pattern: Any = ...
     urlconf_name: str | None = ...
