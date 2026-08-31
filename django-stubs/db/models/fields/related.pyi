@@ -157,6 +157,12 @@ class ForeignKey(ForeignObject[_M], Generic[_M]):
     many_to_many: Literal[False] = ...
     many_to_one: Literal[True] = ...
     related_model: type[_M] = ...
+    # A lazy reference — ForeignKey("app.Model", ...) — carries no type to solve
+    # _M from. Without this overload _M is left unsolved and, on the null=True
+    # variant, collapses the field to None, so every read of it errors. Degrade
+    # to Any instead: unknown, not absent.
+    @overload
+    def __new__(cls, to: str, on_delete: _OnDeleteOptions, **kwargs: Any) -> ForeignKey[Any]: ...
     @overload
     def __new__(
         cls,
@@ -245,6 +251,12 @@ class OneToOneField(ForeignKey[_M], Generic[_M]):
     many_to_many: Literal[False] = ...
     many_to_one: Literal[False] = ...  # type: ignore [assignment]
     related_model: type[_M] = ...
+    # A lazy reference — ForeignKey("app.Model", ...) — carries no type to solve
+    # _M from. Without this overload _M is left unsolved and, on the null=True
+    # variant, collapses the field to None, so every read of it errors. Degrade
+    # to Any instead: unknown, not absent.
+    @overload
+    def __new__(cls, to: str, on_delete: _OnDeleteOptions, **kwargs: Any) -> OneToOneField[Any]: ...
     @overload
     def __new__(
         cls,

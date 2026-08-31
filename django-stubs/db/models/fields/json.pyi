@@ -1,18 +1,21 @@
 import json
 from collections.abc import Callable, Iterable
-from typing import Any, Literal, TypeVar, overload
+from typing import Any, Literal, overload
 
 from django.core.validators import _ValidatorCallable
 from django.db.models import lookups
 from django.db.models.expressions import Combinable, Func
 from django.db.models.lookups import PostgresOperatorLookup, Transform
 from django.utils.functional import _StrOrPromise
-from typing_extensions import Self
+from typing_extensions import Self, TypeVar
 
 from . import Field, _ErrorMessagesMapping
 from .mixins import CheckFieldDefaultMixin
 
-_A = TypeVar("_A", bound=Any | None)
+# Defaulted so an unparameterized `JSONField(...)` resolves to `JSONField[Any]`
+# rather than leaving _A unsolved. Without the default every plain JSONField
+# declaration errors at its use sites. Same pattern as query.pyi's _Row.
+_A = TypeVar("_A", bound=Any | None, default=Any)
 
 class JSONField(CheckFieldDefaultMixin, Field[_A | Combinable, _A]):
     encoder: type[json.JSONEncoder] = ...
