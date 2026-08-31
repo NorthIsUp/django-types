@@ -281,20 +281,17 @@ class Client(ClientMixin, RequestFactory):
         query_params: str | None = ...,
         **extra: str,
     ) -> HttpResponse: ...
-    # Client runs the request through the handler, so generic() returns the
-    # response like every other verb here - not the WSGIRequest that
-    # RequestFactory.generic() builds.
     def generic(  # type: ignore [override]
         self,
         method: str,
-        path: str,
-        data: Any = ...,
+        path: _StrOrPromise,
+        data: _RequestData = ...,
         content_type: str | None = ...,
         secure: bool = ...,
         *,
         headers: Mapping[str, Any] | None = ...,
         query_params: str | None = ...,
-        **extra: Any,
+        **extra: str,
     ) -> HttpResponse: ...
     def trace(  # type: ignore [override]
         self,

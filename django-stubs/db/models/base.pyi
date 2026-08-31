@@ -81,14 +81,12 @@ class Model(metaclass=ModelBase):
         self,
         using: str | None = ...,
         fields: Iterable[str] | None = ...,
-        from_queryset: QuerySet[Any] | None = ...,
         from_queryset: QuerySet[Self] | None = ...,
     ) -> None: ...
     async def arefresh_from_db(
         self,
         using: str | None = ...,
         fields: Iterable[str] | None = ...,
-        from_queryset: QuerySet[Any] | None = ...,
         from_queryset: QuerySet[Self] | None = ...,
     ) -> None: ...
     def get_deferred_fields(self) -> set[str]: ...

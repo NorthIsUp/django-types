@@ -12,9 +12,6 @@ from typing_extensions import Self, TypeVar
 from . import Field, _ErrorMessagesMapping
 from .mixins import CheckFieldDefaultMixin
 
-# Defaulted so an unparameterized `JSONField(...)` resolves to `JSONField[Any]`
-# rather than leaving _A unsolved. Without the default every plain JSONField
-# declaration errors at its use sites. Same pattern as query.pyi's _Row.
 _A = TypeVar("_A", bound=Any | None, default=Any)
 
 class JSONField(CheckFieldDefaultMixin, Field[_A | Combinable, _A]):

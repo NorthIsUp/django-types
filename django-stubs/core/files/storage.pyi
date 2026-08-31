@@ -47,8 +47,6 @@ default_storage: Storage
 
 def get_storage_class(import_path: str | None = ...) -> type[Storage]: ...
 
-# Django 4.2 storage handler. `storages` is the configured-alias registry and
-# InvalidStorageError is what it raises for an unknown alias.
 class InvalidStorageError(ImproperlyConfigured): ...
 
 class StorageHandler:
