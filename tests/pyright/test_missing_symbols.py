@@ -96,3 +96,23 @@ reveal_type(params)
 """
     )
     assert [r for r in results if r.type == "error"] == []
+
+
+def test_admin_site_get_model_admin() -> None:
+    """A test asserts which bulk actions a model's admin exposes.
+
+    AdminSite.get_model_admin is the supported way to reach a registered
+    ModelAdmin - Django added it in 5.0 precisely so callers stop reading the
+    private _registry dict - but the stub only declared is_registered, so the
+    lookup failed to resolve at all.
+    """
+    results = run_pyright(
+        """\
+from django.contrib.admin.sites import site
+from django.contrib.auth.models import User
+
+model_admin = site.get_model_admin(User)
+reveal_type(model_admin)
+"""
+    )
+    assert [r for r in results if r.type == "error"] == []
