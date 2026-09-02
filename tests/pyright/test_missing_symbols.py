@@ -116,3 +116,21 @@ reveal_type(model_admin)
 """
     )
     assert [r for r in results if r.type == "error"] == []
+
+
+def test_http_response_supports_in() -> None:
+    """A test asserts a header is present with `in`, the way Django documents it.
+
+    HttpResponseBase aliases __contains__ to has_header, so `"Retry-After" in
+    response` is the idiomatic spelling. The stub declared only has_header, so
+    the `in` form was rejected and call sites had to be rewritten around it.
+    """
+    results = run_pyright(
+        """\
+from django.http import HttpResponse
+
+response = HttpResponse()
+reveal_type("Retry-After" in response)
+"""
+    )
+    assert [r for r in results if r.type == "error"] == []
