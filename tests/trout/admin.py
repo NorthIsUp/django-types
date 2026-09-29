@@ -1,5 +1,7 @@
 from collections.abc import Callable
 
+from typing_extensions import Self
+
 from django.contrib import admin
 from django.contrib.admin.filters import EmptyFieldListFilter
 from django.db.models import QuerySet
@@ -28,7 +30,9 @@ class ActionsAdmin(admin.ModelAdmin[IndexModel]):
     @admin.action(description="Archive")
     def archive(self, request: HttpRequest, queryset: QuerySet[IndexModel]) -> None: ...
 
-    def get_actions(self, request: HttpRequest) -> dict[str, tuple[Callable[..., HttpResponseBase | None], str, str]]:
+    def get_actions(
+        self, request: HttpRequest
+    ) -> dict[str, tuple[Callable[[Self, HttpRequest, QuerySet[IndexModel]], HttpResponseBase | None], str, str]]:
         # An action returning None (Django's usual) goes into the actions map.
         actions = super().get_actions(request)
         actions.pop("delete_selected", None)
